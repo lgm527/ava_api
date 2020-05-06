@@ -1,13 +1,23 @@
 import cors from 'cors';
 import express from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(cors());
 
-// app.get('/', (req, res) => {
-//   return res.send('Received a GET HTTP method');
-// });
+app.get('/', (req, res) => {
+  return res.send('Welcome!');
+});
+
+// Test
+
+app.get('/dev', (req, res) => {
+  return res.send('testing');
+});
 
 // Ping
 
@@ -50,8 +60,37 @@ app.get('/info', (req, res) => {
 
 // Mutations
 
+let mutations = {
+  "2026f50e-4499-4d44-98be-6f53c48f2043": {
+    "id":"2026f50e-4499-4d44-98be-6f53c48f2043",
+    "mutation":"Hello there"
+  }
+}
+
+app.get('/mutations', (req, res) => {
+  return res.send(mutations);
+});
+
 app.post('/mutations', (req, res) => {
-  return res.send('mutation sent');
+  const id = uuidv4();
+  const mutation = {
+    id,
+    "author": req.body.author,
+    "conversationId": req.body.conversationId,
+    "data": {
+      "index": req.body.data.index,
+      "length": req.body.data.length,
+      "text": req.body.data.text,
+      "type": req.body.data.type
+    },
+    "origin": {
+      "alice": req.body.origin.alice,
+      "bob": req.body.origin.bob
+    }
+  }
+  mutations[id] = mutation;
+
+  return res.send(mutation);
 });
 
 // Conversations
