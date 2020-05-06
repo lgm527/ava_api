@@ -5,21 +5,9 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', (req, res) => {
-  return res.send('Received a GET HTTP method');
-});
-
-app.post('/', (req, res) => {
-  return res.send('Received a POST HTTP method');
-});
-
-app.put('/', (req, res) => {
-  return res.send('Received a PUT HTTP method');
-});
-
-app.delete('/', (req, res) => {
-  return res.send('Received a DELETE HTTP method');
-});
+// app.get('/', (req, res) => {
+//   return res.send('Received a GET HTTP method');
+// });
 
 // Ping
 
@@ -32,79 +20,67 @@ app.get('/ping', (req, res) => {
   return res.send(ping);
 });
 
-// Users
+// Info
 
-let users = {
-  1: {
-    id: '1',
-    username: 'Bob',
+// 1. How did you approach the problem? Tell us in 5-10 sentences max.
+// 2. What would you add if you have more time?
+// 3. What would you remove / add in the challenge if you were in the hiring side?
+
+let info = {
+  "ok": true,
+  "author": {
+    "email": "laurellmccaffrey@gmail.com",
+    "name": "Laurell McCaffrey"
   },
-  2: {
-    id: '2',
-    username: 'Alice',
+  "frontend": {
+    "url": "string, the url of your frontend."
   },
-};
-
-app.get('/users', (req, res) => {
-  return res.send(Object.values(users));
-});
-
-app.get('/users/:userId', (req, res) => {
-  return res.send(users[req.params.userId]);
-});
-
-app.post('/users', (req, res) => {
-  return res.send('POST HTTP method on user resource');
-});
-
-app.put('/users/:userId', (req, res) => {
-  return res.send(
-    `PUT HTTP method on user/${req.params.userId} resource`,
-  );
-});
-
-app.delete('/users/:userId', (req, res) => {
-  return res.send(
-    `DELETE HTTP method on user/${req.params.userId} resource`,
-  );
-});
-
-// Tasks
-
-let tasks = {
-  1: {
-    id: '1',
-    text: 'Hello World',
-    userId: '1',
+  "language": "node.js",
+  "sources": "string, the url of a github repository including your backend sources and your frontend sources",
+  "answers": {
+    "1": "string, answer to the question 1",
+    "2": "string, answer to the question 2",
+    "3": "string, answer to the question 3"
   }
 }
 
-app.get('/tasks', (req, res) => {
-  return res.send(Object.values(tasks));
+app.get('/info', (req, res) => {
+  return res.send(info.answers);
 });
 
-app.get('/tasks/:taskId', (req, res) => {
-  return res.send(tasks[req.params.taskId]);
+// Mutations
+
+app.post('/mutations', (req, res) => {
+  return res.send('mutation sent');
 });
 
-app.post('/tasks', (req, res) => {
-  return res.send('POST HTTP method on tasks resource');
+// Conversations
+
+let conversations = [
+  {
+  "id": "1",
+  "lastMutation": "Object, The last mutation applyed on this conversation",
+  "text": "hi"
+  },
+  {
+  "id": "2",
+  "lastMutation": "Object, The last mutation applyed on this conversation",
+  "text": "hello"
+  }
+]
+
+app.get('/conversations', (req, res) => {
+  return res.send(Object.values(conversations));
 });
 
-app.put('/tasks/:taskId', (req, res) => {
+app.delete('/conversations/:conversationId', (req, res) => {
   return res.send(
-    `PUT HTTP method on tasks/${req.params.taskId} resource`,
-  );
-});
-
-app.delete('/tasks/:taskId', (req, res) => {
-  return res.send(
-    `DELETE HTTP method on tasks/${req.params.taskId} resource`,
+    `DELETE HTTP method on tasks/${req.params.conversationId} resource`,
   );
 });
 
 // starting
 
 app.listen(3000, () =>
-  console.log('Hello Ava team!'),
+  console.log('Hello Ava team! 👋')
 );
