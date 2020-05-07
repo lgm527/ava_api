@@ -15,16 +15,17 @@ router.get('/:conversationId', async (req, res) => {
   return res.send(conversation);
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const id = uuidv4();
-  const conversation = {
+  const conversation = await req.context.models.Conversation.create({
     id,
     "text": req.body.text
-  }
+  });
+
   return res.send(conversation);
 });
 
-router.delete('/:conversationId', async (req, res) => {
+router.delete('/:conversationId', async (req, res, next) => {
   const result = await req.context.models.Conversation.destroy({
     where: { id: req.params.conversationId },
   });
