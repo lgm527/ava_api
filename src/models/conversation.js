@@ -1,34 +1,23 @@
-//     {
-//       "id": "string",
-//       "lastMutation": "Object, The last mutation applyed on this conversation",
-//       "text": "string"
-//     },
-//     "..."
-
 const conversation = (sequelize, DataTypes) => {
   const Conversation = sequelize.define('conversation', {
-    author: {
+    id: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    conversationId: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+    lastMutation: {
+      type: DataTypes.STRING
     },
-    data: {
-      
+    text: {
+      type: DataTypes.STRING
     }
   });
 
   Conversation.associate = models => {
-    Conversation.hasMany(models.Mutation);
+    Conversation.hasMany(models.Mutation, { onDelete: 'CASCADE' });
   };
 
   return Conversation;

@@ -1,6 +1,8 @@
-import cors from 'cors';
+import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
+import models, { sequelize } from './models';
 
 const app = express();
 
@@ -60,15 +62,8 @@ app.get('/info', (req, res) => {
 
 // Mutations
 
-let mutations = {
-  "2026f50e-4499-4d44-98be-6f53c48f2043": {
-    "id":"2026f50e-4499-4d44-98be-6f53c48f2043",
-    "mutation":"Hello there"
-  }
-}
-
 app.get('/mutations', (req, res) => {
-  return res.send(mutations);
+  return res.send('mutations');
 });
 
 app.post('/mutations', (req, res) => {
@@ -120,6 +115,8 @@ app.delete('/conversations/:conversationId', (req, res) => {
 
 // starting
 
-app.listen(3000, () =>
-  console.log('Hello Ava team! 👋')
-);
+sequelize.sync().then(() => {
+  app.listen(process.env.PORT, () => {
+    console.log('Hello Ava team! 👋')
+  });
+});
